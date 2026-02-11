@@ -17,8 +17,8 @@ class RoleSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
+        //admin roles
         $roles = [
-            'superadmin',
             'admin',
             'member',
         ];
@@ -27,16 +27,19 @@ class RoleSeeder extends Seeder
             Role::firstOrCreate(['name' => $role]);
         }
 
+        // admin permissions
         $permissions = [
             'edit-short-url',
             'view-short-url',
-            'invite-user',
         ];
 
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
         }
 
-        Role::findByName('superadmin')->givePermissionTo('invite-user');
+        //superadmin permission
+        $super_permission = Permission::firstOrCreate(['name' => 'invite-user', 'guard_name' => SUPER]);
+
+        Role::firstOrCreate(['name' => 'superadmin', 'guard_name' => SUPER])->givePermissionTo($super_permission);
     }
 }

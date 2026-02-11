@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Company extends Model
 {
-    
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $guarded = ['id'];
+
     /**
      * Get all the companies users
      */
