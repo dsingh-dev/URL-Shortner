@@ -13,12 +13,12 @@ class CompanyInviteController extends Controller
 {
     public function __construct(protected InvitationService $invitationService){}
 
-    public function index()
+    public function create()
     {
         return view(SUPER . '.invite-company');
     }
 
-    public function create(StoreCompanyRequest $request) {
+    public function store(StoreCompanyRequest $request) {
         $validated = $request->validated();
 
         $company = Company::create($validated);

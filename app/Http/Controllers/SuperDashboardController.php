@@ -23,7 +23,6 @@ class SuperDashboardController extends Controller
         $companies->appends(Request::all());
 
         $shorturls_query = ShortUrl::query();
-        $shorturls_query->where('company_id', Auth::guard(SUPER)->user()?->id);
         $shorturls = $shorturls_query->orderBy("id", "desc")->paginate(5);
 
         return view(SUPER . '.dashboard', [
