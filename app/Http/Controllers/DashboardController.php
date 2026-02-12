@@ -15,9 +15,7 @@ class DashboardController extends Controller
         $modelQuery = ShortUrl::query();
         $userQuery = User::query();
 
-        $modelQuery->where('company_id', $user->company_id)->where('user_id', $user->id);
-
-        $shorturls = $modelQuery->orderBy("id", "desc")->paginate(5);
+        $shorturls = $modelQuery->visibleTo($user)->latest()->paginate(5);
         $shorturls->appends(Request::all());
 
         $users = $userQuery->withCount('shortUrls')
