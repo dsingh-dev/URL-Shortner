@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class SuperAdmin extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
+
+    protected $table = "superadmins";
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +23,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'company_id',
     ];
 
     /**
@@ -47,12 +46,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    /**
-     * Get user company
-     */
-    public function company(): BelongsTo {
-        return $this->belongsTo(Company::class);
     }
 }

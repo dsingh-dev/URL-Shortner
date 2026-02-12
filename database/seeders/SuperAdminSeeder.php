@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Company;
+use App\Models\SuperAdmin;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,12 +18,10 @@ class SuperAdminSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin_count = User::all()->count();
+        $admin_count = SuperAdmin::all()->count();
         if ($admin_count > 0) return;
 
-        $company = Company::first();
-
-        $user = $company->users()->create([
+        $user = SuperAdmin::create([
             'name' => 'Super Admin',
             'email' => 'superadmin@admin.com',
             'password' => Hash::make('12345678'),
