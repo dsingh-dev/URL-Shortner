@@ -27,7 +27,7 @@ class SuperAdminSeeder extends Seeder
             'password' => Hash::make('12345678'),
         ]);
 
-        $role = Role::findByName('superadmin');
+        $role = Role::findByName('superadmin', SUPER);
 
         if(!$role) return;
 
