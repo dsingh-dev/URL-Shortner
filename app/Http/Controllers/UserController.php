@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Services\InvitationService;
+use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
@@ -14,11 +15,13 @@ class UserController extends Controller
         return view('users.create');
     }
 
-    public function store(StoreUserRequest $request)
-    {
+    public function store(StoreUserRequest $request): RedirectResponse {
         $validated = $request->validated();
 
-        $this->invitation_service->sendInvitationEmail(auth()->user()->company, $validated);
+        /** @var \App\Models\Company $company */
+        $company = auth()->user()->company;
+
+        $this->invitation_service->sendInvitationEmail($company, $validated);
 
         return redirect()->route('dashboard')->with('success', 'User invited successfully! check mails for password reset link');
     }
