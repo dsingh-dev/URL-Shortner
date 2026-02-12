@@ -16,6 +16,7 @@ If you have these requirements, you can start by cloning the repository and inst
 git clone https://github.com/dsingh-dev/URL-Shortner.git URL-Shortner
 
 cd URL-Shortner
+```
 
 Next, install the dependencies using [Composer](https://getcomposer.org):
 
