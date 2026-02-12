@@ -73,6 +73,19 @@ Seed the database:
 php artisan db:seed
 ```
 
+Now start the server:
+
+```bash
+php artisan serve
+```
+
+You can now access the application at `http://127.0.0.1:8000`.
+
+You can login as super adminwith following credentials:
+- url: http://127.0.0.1:8000/superadmin
+- Email: superadmin@admin.com
+- Password: 12345678
+
 Run test suite to ensure everything is working:
 
 ```bash
