@@ -17,7 +17,7 @@
                                 <h2 class="text-lg font-semibold text-gray-800">
                                     Clients
                                 </h2>
-                                <a href="{{ route('superadmin.invite-company') }}" class="px-3 py-2 text-xs rounded-full bg-blue-100 text-blue-600 float-right">
+                                <a href="{{ route(SUPER . '.invite-company.create') }}" class="px-3 py-2 text-xs rounded-full bg-blue-100 text-blue-600 float-right">
                                     Invite company
                                 </a> 
                             </div>

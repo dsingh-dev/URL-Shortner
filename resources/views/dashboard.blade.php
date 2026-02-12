@@ -1,3 +1,4 @@
+@use('App\Enums\UserRole')
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -19,9 +20,6 @@
                                 Generate
                             </a>
                         </div>
-                        <a href="#" class="px-3 py-2 text-xs rounded-full bg-blue-100 text-blue-600 float-right">
-                            Download
-                        </a> 
                     </div>
 
                     <!-- Table -->
@@ -75,6 +73,7 @@
             </div>
         </div>
     </div>
+    @if (Auth::user()->can('invite-user'))
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -84,7 +83,7 @@
                         <h2 class="text-lg font-semibold text-gray-800">
                             Team Members
                         </h2>
-                        <a href="#" class="px-3 py-2 text-xs rounded-full bg-blue-100 text-blue-600 float-right">
+                        <a href="{{ route('invite-user.create') }}" class="px-3 py-2 text-xs rounded-full bg-blue-100 text-blue-600 float-right">
                             Invite Admin/Member
                         </a> 
                     </div>
@@ -105,17 +104,28 @@
 
                             <!-- Body -->
                             <tbody class="divide-y text-center">
-
-                                    <tr class="hover:bg-gray-50 transition">
-                                        <td class="px-6 py-4 font-medium text-gray-900">
-                                        </td>
-                                        <td class="px-6 py-4">
-                                        </td>
-                                        <td class="px-6 py-4">
-                                        </td>
-                                        <td class="px-6 py-4">
-                                        </td>
-                                    </tr>
+                                    @forelse ($users as $user)
+                                        <tr class="hover:bg-gray-50 transition">
+                                            <td class="px-6 py-4 font-medium text-gray-900">
+                                                {{ $user->name }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{ $user->email }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{ UserRole::tryFrom($user->roles->first()?->name)?->getDisplayName() ?? '' }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{ $user->short_urls_count }}
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                                                No users found
+                                            </td>
+                                        </tr>
+                                    @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -124,4 +134,5 @@
             </div>
         </div>
     </div>
+    @endif
 </x-app-layout>

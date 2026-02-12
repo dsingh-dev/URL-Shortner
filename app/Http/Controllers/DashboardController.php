@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ShortUrl;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
@@ -12,12 +13,18 @@ class DashboardController extends Controller
     {   
         $user = Auth::user();
         $modelQuery = ShortUrl::query();
+        $userQuery = User::query();
 
-        $modelQuery->where('user_id', $user->id);
+        $modelQuery->where('company_id', $user->company_id)->where('user_id', $user->id);
 
         $shorturls = $modelQuery->orderBy("id", "desc")->paginate(5);
         $shorturls->appends(Request::all());
 
-        return view('dashboard', compact('shorturls'));
+        $users = $userQuery->withCount('shortUrls')
+                            ->where('company_id', $user->company_id)
+                            ->whereKeyNot($user->id)
+                            ->role(['admin','member'])->get();
+        
+        return view('dashboard', compact('shorturls', 'users'));
     }
 }

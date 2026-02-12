@@ -10,7 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 class SuperAdmin extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, HasRoles;
 
     protected $table = "superadmins";
 
