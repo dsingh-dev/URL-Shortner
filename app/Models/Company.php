@@ -20,4 +20,11 @@ class Company extends Model
     public function users(): HasMany {
         return $this->hasMany(User::class);
     }
+
+    /**
+     * Get all the shorturls
+     */
+    public function shortUrls(): HasMany {
+        return $this->hasMany(ShortUrl::class);
+    }
 }

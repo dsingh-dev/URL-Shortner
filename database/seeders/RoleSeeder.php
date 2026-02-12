@@ -38,8 +38,10 @@ class RoleSeeder extends Seeder
         }
 
         //superadmin permission
-        $super_permission = Permission::firstOrCreate(['name' => 'invite-user', 'guard_name' => SUPER]);
+        $role = Role::firstOrCreate(['name' => 'superadmin', 'guard_name' => SUPER]);
 
-        Role::firstOrCreate(['name' => 'superadmin', 'guard_name' => SUPER])->givePermissionTo($super_permission);
+        $super_permission = Permission::firstOrCreate(['name' => 'invite-user', 'guard_name' => SUPER]);
+        
+        $role->givePermissionTo($super_permission);
     }
 }

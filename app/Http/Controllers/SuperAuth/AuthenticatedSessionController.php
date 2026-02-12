@@ -3,19 +3,24 @@
 namespace App\Http\Controllers\SuperAuth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\SuperAuth\LoginRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
-class AuthenticateSessionController extends Controller
+class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(): View|RedirectResponse
     {
+        if (Auth::guard(SUPER)->check()) {
+            return redirect()->route(SUPER . '.dashboard');
+        }
+        
         return view(SUPER . '.auth.login');
     }
 
@@ -24,16 +29,11 @@ class AuthenticateSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $credentials = $request->validated();
+        $request->authenticate();
 
-        if (Auth::guard(SUPER)->attempt($credentials)) {
+        $request->session()->regenerate();
 
-            $request->session()->regenerate();
-            
-            return redirect()->route(SUPER . '.dashboard');
-        }
-
-        return redirect()->intended(route(SUPER . '.login', absolute: false));
+        return redirect()->route(SUPER . '.dashboard');
     }
 
     /**
@@ -41,12 +41,12 @@ class AuthenticateSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('superadmin')->logout();
+        Auth::guard(SUPER)->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect(SUPER . '/login');
+        return redirect()->route(SUPER . '.login');
     }
 }
