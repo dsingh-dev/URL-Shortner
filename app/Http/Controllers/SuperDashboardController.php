@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\ShortUrl;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,8 +15,7 @@ class SuperDashboardController extends Controller
         Auth::shouldUse(SUPER);
     }
 
-    public function index()
-    {   
+    public function index(): View {   
         $modelQuery = Company::query();
         $modelQuery->withCount('users', 'shortUrls');
         

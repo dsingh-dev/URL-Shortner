@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Services\InvitationService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
     public function __construct(protected InvitationService $invitation_service){}
     
-    public function create()
-    {
+    public function create(): View {
         return view('users.create');
     }
 

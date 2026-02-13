@@ -22,8 +22,7 @@ class DashboardController extends Controller
 
         $users = $userQuery->withCount('shortUrls')
                             ->where('company_id', $user->company_id)
-                            ->whereKeyNot($user->id)
-                            ->role(['admin','member'])->get();
+                            ->whereKeyNot($user->id)->get();
         
         return view('dashboard', compact('shorturls', 'users'));
     }
