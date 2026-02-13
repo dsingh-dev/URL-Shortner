@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreShortUrlRequest;
 use App\Models\ShortUrl;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -11,11 +13,11 @@ use Illuminate\Support\Str;
 class ShortUrlController extends Controller
 {
     
-    public function create() {
+    public function create(): View {
         return view('shorturls.create');
     }
 
-    public function store(StoreShortUrlRequest $request) {
+    public function store(StoreShortUrlRequest $request): RedirectResponse {
         $validated = $request->validated();
 
         $validated['short_code'] = Str::random(8);
@@ -25,16 +27,11 @@ class ShortUrlController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function findShortCode(string $short_code) {
-        $url = ShortUrl::where('short_code', $short_code)->first();
+    public function findShortCode(string $short_code): RedirectResponse {
+        $url = ShortUrl::whereShortCode($short_code)->firstOrFail();
 
-        if(!$url) {
-            return 'URL not found';
-        }
+        $url->increment('total_hits');
 
-        $url->total_hits++;
-        $url->save();
-
-        return redirect($url->long_url);
+        return redirect()->away($url->long_url);
     }
 }
